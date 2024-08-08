@@ -126,10 +126,10 @@
                                                         href="{{ route('hang-hoa.show', $tk->ma_hang_hoa) }}">{{ strlen($tk->ten_hang_hoa) > 20 ? substr($tk->ten_hang_hoa, 0, 20) . '...' : substr($tk->ten_hang_hoa, 0, 20) }}</a>
                                                 </div>
                                             </td>
-                                            <td class="tb-col"><span> {{ $tk->get_chi_tiet_sum_so_luong }}</span></td>
+                                            <td class="tb-col"><span> {{ $tk->get_chi_tiet_sum_so_luong ?? 0 }}</span></td>
                                             <td class="tb-col"><span> {{ $tk->get_chi_tiet_sum_so_luong_goc }}</span></td>
                                             <td class="tb-col"><span> {{ number_format($tk->gia_nhap, 0, '', '.') }} VNĐ</span></td>
-                                            <td class="tb-col"><span> {{ $tk->get_chi_tiet_xuat_kho_sum_so_luong }}</span></td>
+                                            <td class="tb-col"><span> {{ $tk->get_chi_tiet_xuat_kho_sum_so_luong ?? 0 }}</span></td>
                                             <td class="tb-col"><span> {{ number_format($tk->gia_xuat, 0, '', '.') }} VNĐ</span></td>
                                             <td class="tb-col tb-col-end"><span> {{ number_format($tk->lai, 0, '', '.') }} VNĐ</span></td>
                                         </tr>
@@ -188,7 +188,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 

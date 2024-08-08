@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\NhapKho;
 use App\Models\ChiTietHangHoa;
 use App\Models\HangHoa;
@@ -12,6 +13,7 @@ use App\Http\Requests\ExcelRequest;
 use App\Imports\ChiTietHangHoaImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
 
@@ -81,14 +83,18 @@ class NhapKhoController extends Controller
 
     public function import(ExcelRequest $request)
     {
-        $data = Validator::make($request->all(), [
+        $data = $request->all();
+
+        $validated = Validator::make($data, [
             'ma_phieu_nhap' => 'required',
             'ngay_nhap' => 'required',
             'ma_ncc' => 'required'
         ]);
 
-        if ($data->fails()) {
 
+        if ($validated->fails()) {
+            Alert::error('Thất bại', 'Có lỗi xảy ra trong quá trình nhập dữ liệu. Xin vui lòng kiểm tra lại!')->autoClose(5000);
+            return back();
         }
 
         $mo_ta = json_decode($request->mo_ta)->ops[0]->insert;
@@ -115,10 +121,11 @@ class NhapKhoController extends Controller
             $ct_hang_hoa->setNhaCungCap($ma_ncc);
 
             Excel::import($ct_hang_hoa, $file);
-            return redirect()->route('nhap-kho.index')->with(['status' => 'Thêm dữ liệu từ file Excel thành công!!!', 'type' => 'success']);
+            Alert::success('Thành công', 'Thêm dữ liệu từ file Excel thành công!');
+            return redirect()->route('nhap-kho.index');
 
         } catch(ValidationException $e) {
-            NhapKho::delete($phieu_nhap->id);
+            NhapKho::destroy($phieu_nhap->id);
             ChiTietHangHoa::where('ma_phieu_nhap', $data['ma_phieu_nhap'])->delete();
 
             $failures = $e->failures();
@@ -127,7 +134,8 @@ class NhapKhoController extends Controller
                 $errors[] = "Dòng " . $failure->row() . ": " . $failure->errors()[0];
             }
 
-            return back()->with(['errors' => $errors, 'status' => 'Xuất hiện lỗi trong khi thêm dữ liệu từ file Excel!', 'type' => 'danger']);
+            Alert::error('Thất bại', 'Xuất hiện lỗi trong khi thêm dữ liệu từ file Excel!')->autoClose(5000);
+            return back()->with(['errors' => $errors]);
         }
     }
 

@@ -5,11 +5,11 @@ namespace App\Imports;
 use App\Models\ChiTietHangHoa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rules\DateFormat;
 
-class ChiTietHangHoaImport implements ToModel, WithChunkReading, WithHeadingRow, WithValidation
+class ChiTietHangHoaImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
@@ -23,7 +23,7 @@ class ChiTietHangHoaImport implements ToModel, WithChunkReading, WithHeadingRow,
     {
         $this->ma_phieu_nhap = $ma_phieu_nhap;
     }
-    
+
 
     public function setTrangThai($trang_thai)
     {
@@ -55,7 +55,7 @@ class ChiTietHangHoaImport implements ToModel, WithChunkReading, WithHeadingRow,
             'ma_ncc' => $row['ma_ncc'],
             'so_luong' => $row['so_luong'],
             'so_luong_goc' => $row['so_luong'],
-            'trang_thai' => $row['trang_thai'],
+            'id_trang_thai' => $row['trang_thai'],
             'gia_nhap' => $row['gia_nhap'],
             'ngay_san_xuat' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['ngay_san_xuat'])->format('Y-m-d'),
             'tg_bao_quan' => $row['thoi_gian_bao_quan']
@@ -65,16 +65,12 @@ class ChiTietHangHoaImport implements ToModel, WithChunkReading, WithHeadingRow,
     public function rules(): array
     {
         return [
-            '*.ma_hang_hoa' => 'required|string|max:50',
+            '*.ma_hang_hoa' => 'required|string|max:50|exists:hang_hoa,ma_hang_hoa',
             '*.so_luong' => 'required|integer',
             '*.gia_nhap' => 'required|integer',
+            // '*.ngay_san_xuat' => 'required|date_format:Y-m-d|before:tomorrow',
             '*.thoi_gian_bao_quan' => 'required|integer',
         ];
-    }
-
-    public function chunkSize(): int
-    {
-        return 100;
     }
 
     public function getErrors(): array

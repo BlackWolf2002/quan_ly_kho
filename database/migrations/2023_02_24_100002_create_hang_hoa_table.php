@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('don_vi_tinh');
             $table->integer('barcode')->nullable();
             $table->char('img')->nullable();
+            $table->char('ma_du_an');
             $table->timestamps();
         });
     }

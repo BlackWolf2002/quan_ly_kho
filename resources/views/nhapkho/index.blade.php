@@ -135,8 +135,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-sm btn-primary">Đồng
-                            ý</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Xác nhận</button>
                     </div>
                     <input type="hidden" name="ma_phieu_nhap" value="{{ $ma_phieu_nhap }}">
                 </form>

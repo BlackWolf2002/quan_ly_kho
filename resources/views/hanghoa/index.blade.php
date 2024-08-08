@@ -188,6 +188,9 @@
                                 text: response.message,
                                 icon: 'success',
                             });
+                            setTimeout(() => {
+                                window.location.href = response.redirect;
+                            }, 2000);
                         } else {
                             Swal.fire({
                                 title: 'Thất bại!',

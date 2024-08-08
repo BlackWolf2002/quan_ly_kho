@@ -42,7 +42,7 @@ class HangHoaImport implements ToCollection, WithValidation, WithStartRow
                 'barcode' => $row[4],
                 'mo_ta' => $row[5],
                 'id_loai_hang' => $loai_hang->id,
-                'img' => 'hang_hoa.jpg'
+                'img' => 'hanghoa.jpg'
             ]);
         }
     }

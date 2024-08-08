@@ -58,10 +58,10 @@
                     </form>
                 </div>
             </div>
-            <div class="text-center mt-5">
+            {{-- <div class="text-center mt-5">
                 <p class="small">Bạn chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký</a>
                 </p>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
